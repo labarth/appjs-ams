@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,8 +13,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { signInAction } from 'modules/Auth/actions/signInActions';
 
-function Copyright(props: any) {
+const Copyright = (props: any) => {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -28,15 +30,17 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export function SignIn() {
+export const SignIn = (): JSX.Element => {
+ const dispatch = useDispatch();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    dispatch(signInAction({
+      email: data.get('email') as string,
+      password: data.get('password') as string,
+    }));
   };
 
   return (

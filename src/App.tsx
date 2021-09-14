@@ -1,23 +1,23 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router';
-import { NavLink } from 'react-router-dom';
-import { SignIn } from './SignIn';
+import { SignIn } from 'modules/Auth/pages/SignIn';
+import { Loading } from 'common/components/Loading/Loading';
+import { isAppLoadingSelector } from 'common/selectors/selectors';
 
 const App = (): JSX.Element => {
+  const isAppLoading = useSelector(isAppLoadingSelector);
+
+  if (isAppLoading) {
+    return <Loading />;
+  }
+
   return (
-    <>
-      <Switch>
-        <Route exact path="/" render={() => (<div>Home</div>)} />
-        <Route exact path="/signin" render={SignIn} />
-        <Route render={() => (<div>Not found.</div>)} />
-      </Switch>
-      <NavLink to="/">
-        Home
-      </NavLink>
-      <NavLink to="/not-found">
-        not found
-      </NavLink>
-    </>
+    <Switch>
+      <Route exact path="/" render={() => (<div>Home Page</div>)} />
+      <Route exact path="/signin" render={() => <SignIn />} />
+      <Route render={() => (<div>Not found.</div>)} />
+    </Switch>
   );
 }
 

@@ -1,18 +1,23 @@
 import { takeLatest, call, put, delay } from 'redux-saga/effects';
 import { signInAction, signOutAction } from 'modules/Auth/actions/signInActions';
+import { setAppLoading } from 'common/actions/actions';
 import { SignInPayload } from 'modules/Auth/interfaces/signInInterfaces';
 import { isAuthService, signInService} from 'modules/Auth/services/signInService';
 import { push } from 'connected-react-router';
 
-interface SignInSaga {
+interface AuthSaga {
   payload: SignInPayload;
 }
 
-function *signInSaga({ payload }: SignInSaga) {
+function *signInSaga({ payload }: AuthSaga) {
   try {
+    yield put(setAppLoading(true));
+
     const token: string = yield call(signInService, payload);
-    yield localStorage.setItem('token', token);
+    localStorage.setItem('token', token);
+
     yield put(push('/'));
+    yield put(setAppLoading(false));
   } catch(e: any) {
     console.log(e.message);
   }

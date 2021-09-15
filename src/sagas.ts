@@ -1,5 +1,5 @@
 import { fork, call, put } from 'redux-saga/effects';
-import { authorizeSaga, SignInSagaWatcher } from 'modules/Auth/sagas/signInSaga';
+import { authorizeSaga, SignInSagaWatcher } from 'modules/Auth/sagas/authSaga';
 import { setAppLoading } from 'common/actions/actions';
 
 function *initAppSaga() {

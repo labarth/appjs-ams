@@ -2,7 +2,7 @@ import { takeLatest, call, put, delay } from 'redux-saga/effects';
 import { signInAction, signOutAction, setUser } from 'modules/Auth/actions/signInActions';
 import { setAppLoading } from 'common/actions/actions';
 import { SignInPayload } from 'modules/Auth/interfaces/signInInterfaces';
-import { isAuthService, signInService, User } from 'modules/Auth/services/signInService';
+import { isAuthService, signInService } from 'modules/Auth/services/signInService';
 import { push } from 'connected-react-router';
 
 interface AuthSaga {
@@ -34,7 +34,7 @@ export function *authorizeSaga() {
     const token: string | null  = localStorage.getItem('token');
 
     if (token) {
-      const user: User = yield call(isAuthService, token);
+      const { data: user } = yield call(isAuthService, token);
       localStorage.setItem('token', user.token);
       yield put(setUser(user));
       yield put(push('/'));

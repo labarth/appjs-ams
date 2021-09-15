@@ -1,5 +1,5 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
-import { signInAction } from 'modules/Auth/actions/signInActions';
+import { takeLatest, call, put, delay } from 'redux-saga/effects';
+import { signInAction, signOutAction } from 'modules/Auth/actions/signInActions';
 import { SignInPayload } from 'modules/Auth/interfaces/signInInterfaces';
 import { isAuthService, signInService} from 'modules/Auth/services/signInService';
 import { push } from 'connected-react-router';
@@ -18,7 +18,7 @@ function *signInSaga({ payload }: SignInSaga) {
   }
 }
 
-function *signOutSaga() {
+export function *signOutSaga() {
   localStorage.removeItem('token');
   yield put(push('/signin'));
 }
@@ -31,10 +31,12 @@ export function *authorizeSaga() {
     localStorage.setItem('token', updatedToken);
     yield put(push('/'));
   } else {
+    yield delay(0);
     yield put(push('/signin'));
   }
 }
 
 export function *SignInSagaWatcher() {
   yield takeLatest(signInAction, signInSaga);
+  yield takeLatest(signOutAction, signOutSaga);
 }

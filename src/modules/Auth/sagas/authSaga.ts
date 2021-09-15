@@ -13,14 +13,14 @@ function *signInSaga({ payload }: AuthSaga) {
   try {
     yield put(setAppLoading(true));
 
-    const user: User = yield call(signInService, payload);
+    const { data: user } = yield call(signInService, payload);
     localStorage.setItem('token', user.token);
 
     yield put(setUser(user));
     yield put(push('/'));
     yield put(setAppLoading(false));
   } catch(e: any) {
-    console.log(e.message);
+    yield put(setAppLoading(false));
   }
 }
 
@@ -30,14 +30,19 @@ export function *signOutSaga() {
 }
 
 export function *authorizeSaga() {
-  const token: string | null  = localStorage.getItem('token');
+  try {
+    const token: string | null  = localStorage.getItem('token');
 
-  if (token) {
-    const user: User = yield call(isAuthService, token);
-    localStorage.setItem('token', user.token);
-    yield put(setUser(user));
-    yield put(push('/'));
-  } else {
+    if (token) {
+      const user: User = yield call(isAuthService, token);
+      localStorage.setItem('token', user.token);
+      yield put(setUser(user));
+      yield put(push('/'));
+    } else {
+      yield delay(0);
+      yield put(push('/signin'));
+    }
+  } catch (e) {
     yield delay(0);
     yield put(push('/signin'));
   }

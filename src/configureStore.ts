@@ -3,7 +3,6 @@ import { createBrowserHistory } from 'history';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { StateType } from 'typesafe-actions';
 import { routerMiddleware } from 'connected-react-router';
-import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import createRootReducer from './reducers';
 import mainSaga from './sagas';
@@ -22,7 +21,6 @@ export default function configureStore() {
   if (process.env.NODE_ENV === 'development') {
     enhancer = composeWithDevTools(
       applyMiddleware(
-        logger,
         sagaMiddleware,
         routerMiddleware(history),
       ),

@@ -1,9 +1,11 @@
-import { takeLatest, call, put, delay } from 'redux-saga/effects';
+import { takeLatest, call, put, select, delay } from 'redux-saga/effects';
 import { signInAction, signOutAction, setUser } from 'modules/Auth/actions/signInActions';
 import { setAppLoading } from 'common/actions/actions';
 import { SignInPayload } from 'modules/Auth/interfaces/signInInterfaces';
 import { isAuthService, signInService } from 'modules/Auth/services/signInService';
 import { push } from 'connected-react-router';
+import {currentLocationSelector} from '../selectors';
+import {ROUTES_PATH} from '../../../common/constants';
 
 interface AuthSaga {
   payload: SignInPayload;
@@ -29,6 +31,15 @@ export function *signOutSaga() {
   yield put(push('/signin'));
 }
 
+export function *redirectToSignIn() {
+  const location: string = yield select(currentLocationSelector);
+
+  if (location !== ROUTES_PATH.SIGN_UP) {
+    yield delay(0);
+    yield put(push('/signin'));
+  }
+}
+
 export function *authorizeSaga() {
   try {
     const token: string | null  = localStorage.getItem('token');
@@ -39,12 +50,10 @@ export function *authorizeSaga() {
       yield put(setUser(user));
       yield put(push('/'));
     } else {
-      yield delay(0);
-      yield put(push('/signin'));
+      yield call(redirectToSignIn);
     }
   } catch (e) {
-    yield delay(0);
-    yield put(push('/signin'));
+    yield call(redirectToSignIn);
   }
 }
 

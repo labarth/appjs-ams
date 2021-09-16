@@ -1,6 +1,6 @@
 import { createReducer, ActionType } from 'typesafe-actions';
 import { DefaultRootState } from 'react-redux';
-import { setUser } from '../actions/signInActions';
+import { setUser } from './actions';
 
 type Action = ActionType<typeof setUser>;
 

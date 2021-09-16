@@ -1,17 +1,17 @@
 import { takeLatest, call, put, select, delay } from 'redux-saga/effects';
-import { signInAction, signOutAction, setUser } from 'modules/Auth/actions/signInActions';
+import { signInAction, signOutAction, setUser, signUpAction } from 'modules/Auth/actions';
+import { ROUTES_PATH } from 'common/constants';
 import { setAppLoading } from 'common/actions/actions';
-import { SignInPayload } from 'modules/Auth/interfaces/signInInterfaces';
-import { isAuthService, signInService } from 'modules/Auth/services/signInService';
+import { SignInPayload, SignUpPayload } from 'modules/Auth/interfaces';
+import { isAuthService, signInService, signUpService } from 'modules/Auth/services';
 import { push } from 'connected-react-router';
-import {currentLocationSelector} from '../selectors';
-import {ROUTES_PATH} from '../../../common/constants';
+import { currentLocationSelector } from '../selectors';
 
-interface AuthSaga {
+interface SignInSaga {
   payload: SignInPayload;
 }
 
-function *signInSaga({ payload }: AuthSaga) {
+function *signInSaga({ payload }: SignInSaga) {
   try {
     yield put(setAppLoading(true));
 
@@ -57,7 +57,21 @@ export function *authorizeSaga() {
   }
 }
 
+interface SignUpSaga {
+  payload: SignUpPayload;
+}
+
+export function *signUpSaga({ payload } : SignUpSaga) {
+  try {
+    yield call(signUpService, payload);
+    yield put(push('/signin'));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function *SignInSagaWatcher() {
   yield takeLatest(signInAction, signInSaga);
+  yield takeLatest(signUpAction, signUpSaga);
   yield takeLatest(signOutAction, signOutSaga);
 }

@@ -1,8 +1,10 @@
 import { createAction } from 'typesafe-actions';
-import { SignInPayload } from 'modules/Auth/interfaces/signInInterfaces';
-import { User } from 'modules/Auth/services/signInService';
+import { SignInPayload, SignUpPayload } from 'modules/Auth/interfaces';
+import { User } from 'modules/Auth/interfaces';
 
 export const signInAction = createAction('sign_in')<SignInPayload>();
+
+export const signUpAction = createAction('sign_up')<SignUpPayload>();
 
 export const signOutAction = createAction('sign_out')();
 

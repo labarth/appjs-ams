@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { signOutAction } from 'modules/Auth/actions/signInActions';
+import { signOutAction } from 'modules/Auth/actions';
 
 export const Home = (): JSX.Element => {
   const dispatch = useDispatch();

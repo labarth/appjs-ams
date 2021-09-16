@@ -1,10 +1,27 @@
+import produce from 'immer';
 import { createReducer, ActionType } from 'typesafe-actions';
 import { DefaultRootState } from 'react-redux';
-import { setUser } from './actions';
+import { setError, setUser } from './actions';
 
-type Action = ActionType<typeof setUser>;
+type userAction = ActionType<typeof setUser>;
 
 const initialState = {};
 
-export const userReducer = createReducer<DefaultRootState, Action>(initialState)
+interface AuthState {
+  error: object | null;
+}
+const authInitialState = {
+  error: null,
+}
+
+export const userReducer = createReducer<DefaultRootState, userAction>(initialState)
   .handleAction(setUser, (state, { payload }) => payload);
+
+// need fixed it
+export const authReducer = createReducer<AuthState, any>(authInitialState)
+  .handleAction(
+    setError,
+    produce((draft: AuthState, { payload }) => {
+      draft.error = payload;
+    })
+  );

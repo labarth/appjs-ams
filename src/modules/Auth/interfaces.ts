@@ -10,6 +10,11 @@ export interface SignUpPayload {
   password: string;
 }
 
+export interface ErrorPayload {
+  type: number;
+  message: string;
+}
+
 export interface User {
   email: string;
   name: string;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,20 +12,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { signUpAction } from 'modules/Auth/actions';
+import {emailBusyErrorSelector} from '../selectors';
 
 export const SignUp = (): JSX.Element => {
   const dispatch = useDispatch();
+  const error = useSelector(emailBusyErrorSelector);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
 
     dispatch(signUpAction({
       firstName: data.get('firstName') as string,
@@ -83,6 +78,8 @@ export const SignUp = (): JSX.Element => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                helperText={error ? error.message : null}
+                error={error}
               />
             </Grid>
             <Grid item xs={12}>

@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { RootState } from 'configureStore';
 
-const appState = (state: RootState) => state;
+export const appState = (state: RootState) => state;
 
 export const routerSelector = createSelector(
   appState,

@@ -11,13 +11,18 @@ export interface SignUpPayload {
 }
 
 export interface ErrorPayload {
-  type: number;
-  message: string;
+  type?: string;
+  message?: string;
+  code?: number;
 }
 
 export interface User {
   email: string;
-  name: string;
-  surname?: string;
+  firstName: string;
+  lastName: string;
   token: string;
+}
+
+export interface AuthState {
+  error: ErrorPayload;
 }

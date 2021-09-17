@@ -79,7 +79,7 @@ export const SignUp = (): JSX.Element => {
                 name="email"
                 autoComplete="email"
                 helperText={error ? error.message : null}
-                error={error}
+                error={Boolean(error)}
               />
             </Grid>
             <Grid item xs={12}>

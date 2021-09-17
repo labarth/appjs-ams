@@ -1,10 +1,12 @@
 import { ActionType, createReducer } from 'typesafe-actions';
-import { DefaultRootState } from 'react-redux';
 import { setUser } from '../actions';
+import {User} from '../interfaces';
 
 type Actions = ActionType<typeof setUser>;
 
+type UserState = User | {};
+
 const initialState = {};
 
-export const userReducer = createReducer<DefaultRootState, Actions>(initialState)
+export const userReducer = createReducer<UserState, Actions>(initialState)
   .handleAction(setUser, (state, { payload }) => payload);

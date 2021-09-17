@@ -1,20 +1,22 @@
-import { createReducer } from 'typesafe-actions';
-import produce from 'immer';
+import { ActionType, createReducer } from 'typesafe-actions';
+import { AuthState } from 'modules/Auth/interfaces';
 import { setError } from '../actions';
 
-interface AuthState {
-  error: object | null;
-}
+
+type AuthActions = ActionType<typeof setError>;
 
 const initialState = {
-  error: null,
+  error: {},
 };
 
-// need fix any type
-export const authReducer = createReducer<AuthState, any>(initialState)
+
+export const authReducer = createReducer<AuthState, AuthActions>(initialState)
   .handleAction(
     setError,
-    produce((draft: AuthState, { payload }) => {
-      draft.error = payload;
-    })
+    (state, { payload }) => {
+      return {
+        ...state,
+        error: payload,
+      }
+    }
   );

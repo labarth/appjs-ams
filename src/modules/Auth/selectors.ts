@@ -1,23 +1,13 @@
 import { createSelector } from 'reselect';
-import { RootState } from 'configureStore';
+import { appState } from 'common/selectors/selectors';
+import { AUTH_ERROR_TYPE } from './constants';
 
-const authState = (state: RootState ) => state.auth;
-
-const EMAIL_IS_BUSY_ERROR = 'email_is_busy';
-
-const AUTH_ERROR_TYPE = {
-  EMAIL_IS_BUSY_ERROR,
-};
+const authSelector = createSelector(
+  appState,
+  (state) => state.auth,
+);
 
 export const emailBusyErrorSelector = createSelector(
-  authState,
-  (auth) => {
-    // @ts-ignore
-    if (!auth.error) {
-      return null;
-    }
-
-    // @ts-ignore
-    return auth.error.type === AUTH_ERROR_TYPE.EMAIL_IS_BUSY_ERROR ? auth.error : null;
-  }
+  authSelector,
+  (auth) => auth.error.type === AUTH_ERROR_TYPE.EMAIL_IS_BUSY_ERROR ? auth.error : null
 )

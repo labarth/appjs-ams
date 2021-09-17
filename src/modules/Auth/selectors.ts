@@ -1,10 +1,11 @@
 import { createSelector } from 'reselect';
 import { appState } from 'common/selectors/selectors';
+import { RootState } from 'configureStore';
 import { AUTH_ERROR_TYPE } from './constants';
 
 const authSelector = createSelector(
   appState,
-  (state) => state.auth,
+  (state: RootState) => state.auth,
 );
 
 export const emailBusyErrorSelector = createSelector(
